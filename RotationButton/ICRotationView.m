@@ -9,7 +9,7 @@
 #import "ICRotationView.h"
 #import "UIOneRotationGestureRecognizer.h"
 
-@interface ICRotationView ()
+@interface ICRotationView ()<UIGestureRecognizerDelegate>
 //按钮数组
 @property (nonatomic , strong) NSMutableArray *btnArray;
 //旋转的弧度
@@ -33,7 +33,9 @@ static ICRotationView *shareInatance;
         //按钮和按钮标题数组
         _btnArray = [NSMutableArray new];
         _nameArray = [NSMutableArray new];
-        [self addGestureRecognizer:[[UIOneRotationGestureRecognizer alloc]initWithTarget:self action:@selector(changeMove:)]];
+        UIOneRotationGestureRecognizer *rotation = [[UIOneRotationGestureRecognizer alloc]initWithTarget:self action:@selector(changeMove:)];
+        rotation.delegate = self;
+        [self addGestureRecognizer:rotation];
     }
     return self;
 }
@@ -112,7 +114,16 @@ static ICRotationView *shareInatance;
     self.back(num1,name);
     
 }
-    
+//手势的代理方法
+- (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
+{
+    // 过滤掉UIButton，也可以是其他类型
+    if ( [touch.view isKindOfClass:[UIButton class]])
+    {
+        return NO;
+    }
+    return YES;
+}
 #pragma mark -通过旋转手势转动转盘
 - (void)changeMove:(UIOneRotationGestureRecognizer *)retation {
         
