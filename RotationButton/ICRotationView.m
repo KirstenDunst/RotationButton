@@ -108,20 +108,24 @@ static ICRotationView *shareInatance;
     
 #pragma mark - 点击按钮时跳转控制器
 - (void)btn: (UIButton *)btn {
-        
     NSInteger num1 = btn.tag;
     NSString *name = _nameArray[num1];
     self.back(num1,name);
-    
 }
 //手势的代理方法
 - (BOOL)gestureRecognizer:(UIGestureRecognizer *)gestureRecognizer shouldReceiveTouch:(UITouch *)touch
 {
-    // 过滤掉UIButton，也可以是其他类型
-    if ( [touch.view isKindOfClass:[UIButton class]])
-    {
-        return NO;
+    NSLog(@"????????????%@//////////%@",(unsigned long)touch.type,gestureRecognizer);
+    CGPoint nowPoint = [touch locationInView:self];
+    CGPoint prePoint = [touch previousLocationInView:self];
+    if (nowPoint.x == prePoint.x && nowPoint.y == prePoint.y) {
+        // 过滤掉UIButton，也可以是其他类型
+        if ( [touch.view isKindOfClass:[UIButton class]])
+        {
+            return NO;
+        }
     }
+    
     return YES;
 }
 #pragma mark -通过旋转手势转动转盘

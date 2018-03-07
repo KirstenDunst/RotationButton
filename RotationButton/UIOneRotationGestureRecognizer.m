@@ -11,6 +11,14 @@
 
 @implementation UIOneRotationGestureRecognizer
 
+- (void)touchesBegan:(NSSet *)touches withEvent:(UIEvent *)event
+{
+    // Fail when more than 1 finger detected.
+    if ([[event touchesForGestureRecognizer:self] count] > 1) {
+        [self setState:UIGestureRecognizerStateFailed];
+    }
+}
+
 - (void)touchesMoved:(NSSet<UITouch *> *)touches withEvent:(UIEvent *)event{
     if ([self state] == UIGestureRecognizerStatePossible) {
         [self setState:UIGestureRecognizerStateBegan];
